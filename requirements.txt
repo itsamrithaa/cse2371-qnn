@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+torch
+rdkit
+pennylane
+tqdm
+jupyter
+ipykernel
