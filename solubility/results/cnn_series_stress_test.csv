@@ -1,0 +1,6 @@
+compound,smiles,expectation,y_true,y_pred
+Ethyl acetate,CCOC(=O)C,,,
+Butanol,CCCCO,,,
+Acetophenone,CC(=O)c1ccccc1,,,
+Glycerol,C(C(CO)O)O,,,
+Isobutanol,CC(C)CO,,,

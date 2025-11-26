@@ -1,0 +1,6 @@
+compound,smiles,expectation,y_true,y_pred
+Hexane,CCCCCC,low,,
+Methanol,CO,high,,
+Phenol,c1cc(ccc1)O,high,,
+Decanol,CCCCCCCCCCO,low,,
+Hydroquinone,c1cc(ccc1O)O,high,,

@@ -1,0 +1,11 @@
+compound,smiles,expectation,y_true,y_pred
+Methanol,CO,,,
+Ethanol,CCO,,,
+Propanol,CCCO,,,
+Butanol,CCCCO,,,
+Pentanol,CCCCCO,,,
+Hexanol,CCCCCCO,,,
+Heptanol,CCCCCCCO,,,
+Octanol,CCCCCCCCO,,,
+Nonanol,CCCCCCCCCO,,,
+Decanol,CCCCCCCCCCO,,,

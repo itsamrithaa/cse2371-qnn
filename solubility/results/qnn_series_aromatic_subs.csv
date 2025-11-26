@@ -1,0 +1,11 @@
+compound,smiles,expectation,y_true,y_pred
+Phenol,c1ccccc1O,higher,,
+Hydroquinone,c1cc(ccc1O)O,higher,,
+Aniline,c1ccccc1N,higher,,
+Nitrobenzene,c1ccccc1[N+](=O)[O-],higher,,
+Benzaldehyde,O=CC1=CC=CC=C1,higher,,
+Benzene,c1ccccc1,lower,,
+Toluene,Cc1ccccc1,lower,,
+Chlorobenzene,c1ccccc1Cl,lower,,
+Bromobenzene,c1ccccc1Br,lower,,
+Acetophenone,CC(=O)c1ccccc1,lower,,
