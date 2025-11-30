@@ -1,0 +1,6 @@
+compound,smiles,expectation,y_true,cnn_y_pred,qnn_y_pred,hybrid_y_pred
+Hexane,CCCCCC,low,-3.9441703352,-4.398106,-2.918144,-2.1471019
+Methanol,CO,high,1.4942803838999998,0.7269723,0.45703888,0.8628192
+Phenol,c1cc(ccc1)O,high,-0.04,-1.3749713,-1.2037842,-0.2363714
+Decanol,CCCCCCCCCCO,low,-3.6312380365,-3.486497,-2.9480314,-2.4137366
+Hydroquinone,c1cc(ccc1O)O,high,-0.1967366109,-1.1459221,-0.8038964,-0.63006455

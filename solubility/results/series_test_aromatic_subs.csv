@@ -1,0 +1,11 @@
+compound,smiles,expectation,y_true,cnn_y_pred,qnn_y_pred,hybrid_y_pred
+Phenol,c1ccccc1O,higher,-0.04,-1.249777,-1.2037842,-0.2363714
+Hydroquinone,c1cc(ccc1O)O,higher,-0.1967366109,-1.145922,-0.8038964,-0.6300646
+Aniline,c1ccccc1N,higher,-0.4250168953,-0.9186416,-1.1585162,-0.23600945
+Nitrobenzene,c1ccccc1[N+](=O)[O-],higher,-1.8,-2.0099497,-2.2215147,-1.5917172
+Benzaldehyde,O=CC1=CC=CC=C1,higher,-1.2095723109,-0.91771674,-1.950146,-1.074261
+Benzene,c1ccccc1,lower,-1.6423088751,-1.7697884,-2.375929,-1.0920285
+Toluene,Cc1ccccc1,lower,-2.2062982993,-2.0800772,-2.6667106,-1.6299002
+Chlorobenzene,c1ccccc1Cl,lower,-2.4493202347,-2.2198203,-3.0170388,-2.289722
+Bromobenzene,c1ccccc1Br,lower,-2.568561457,-2.759974,-3.2901044,-2.7099652
+Acetophenone,CC(=O)c1ccccc1,lower,-1.2803868403,-1.1476315,-2.3202462,-1.6945843
