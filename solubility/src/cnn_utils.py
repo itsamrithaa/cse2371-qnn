@@ -56,11 +56,41 @@ class SmilesDataset(Dataset):
         return ids, torch.tensor(self.y[idx])  # Return features and target.
 
 
+class SmilesDescDataset(Dataset):
+    # Joint SMILES + descriptor dataset for CNN+descriptor hybrids.
+
+    def __init__(
+        self,
+        smiles: Sequence[str],
+        descriptors: np.ndarray,
+        y: Sequence[float] | None,
+        stoi: Dict[str, int],
+        max_len: int,
+    ):
+        self.smiles = list(smiles)
+        self.desc = np.asarray(descriptors, dtype=np.float32)
+        self.y = None if y is None else np.array(y, dtype=np.float32)
+        self.stoi = stoi
+        self.max_len = max_len
+
+    def __len__(self) -> int:
+        return len(self.smiles)
+
+    def __getitem__(self, idx: int):
+        smi = self.smiles[idx]
+        ids = torch.from_numpy(encode_smiles(smi, self.stoi, self.max_len))
+        x_desc = torch.from_numpy(self.desc[idx])
+        if self.y is None:
+            return ids, x_desc
+        return ids, x_desc, torch.tensor(self.y[idx])
+
+
 class SmilesCNN(nn.Module):
     # Three-branch 1D CNN followed by a two-layer MLP head.
 
     def __init__(self, vocab_size: int, emb_dim: int = 128, max_len: int = 256, dropout: float = 0.2):
         super().__init__()  # Initialize nn.Module.
+        self.feature_dim = 128 * 3  # pooled conv feature size.
         self.emb = nn.Embedding(vocab_size, emb_dim, padding_idx=0)  # Token embedding layer with pad index.
         self.convs = nn.ModuleList(
             [
@@ -72,21 +102,45 @@ class SmilesCNN(nn.Module):
         self.act = nn.ReLU()  # Nonlinearity shared across conv branches.
         self.dropout = nn.Dropout(dropout)  # Regularization.
         self.head = nn.Sequential(
-            nn.Linear(128 * 3, 256),  # Combine pooled conv outputs.
+            nn.Linear(self.feature_dim, 256),  # Combine pooled conv outputs.
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(256, 1),  # Final regression head.
         )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def encode(self, x: torch.Tensor) -> torch.Tensor:
+        # Return pooled CNN features without the final regression head.
         emb = self.emb(x)  # (B, L, E) embedded tokens.
         emb = emb.transpose(1, 2)  # (B, E, L) for Conv1d channel-first format.
         # Apply each convolution, ReLU, and global max pool over sequence length.
         feats = [torch.amax(self.act(conv(emb)), dim=-1) for conv in self.convs]
         h = torch.cat(feats, dim=1)  # Concatenate pooled features from all kernels.
         h = self.dropout(h)  # Dropout before head.
+        return h
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        h = self.encode(x)  # Pooled features.
         out = self.head(h).squeeze(1)  # Final scalar prediction per sample.
         return out  # Shape: (B,)
+
+
+class CNNPlusDescriptors(nn.Module):
+    # Hybrid that concatenates CNN features with precomputed descriptors.
+
+    def __init__(self, cnn_backbone: SmilesCNN, desc_dim: int, hidden: int = 256, dropout: float = 0.3):
+        super().__init__()
+        self.cnn = cnn_backbone
+        self.fc = nn.Sequential(
+            nn.Linear(self.cnn.feature_dim + desc_dim, hidden),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden, 1),
+        )
+
+    def forward(self, x_smiles: torch.Tensor, x_desc: torch.Tensor) -> torch.Tensor:
+        z = self.cnn.encode(x_smiles)  # (B, feature_dim)
+        h = torch.cat([z, x_desc], dim=1)  # (B, feature_dim + desc_dim)
+        return self.fc(h).squeeze(-1)  # (B,)
 
 
 @torch.no_grad()
