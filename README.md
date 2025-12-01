@@ -3,8 +3,11 @@
 
 Unified solubility modeling pipeline comparing a CNN, a pure QNN, and a hybrid classical+QNN model. Everything (data cleaning, training, evaluation on four chemistry-driven series, and metric comparison) now lives in a single notebook:
 
-1. Install deps: `pip install -r requirements.txt` (PyTorch, PennyLane, RDKit, sklearn). Use Python 3.10+.
-2. Launch Jupyter from the repo root: `jupyter notebook` (or use VS Code notebooks).
+1. Create a virtual environment (recommended) and install deps inside it:
+   - macOS/Linux: `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
+   - Windows: `python -m venv .venv && .venv\\Scripts\\activate && pip install -r requirements.txt`
+   - Use Python 3.10+.
+2. Launch Jupyter from the activated env: `jupyter notebook` (or use VS Code notebooks) and pick the `.venv` kernel if prompted.
 3. Run `solubility/notebooks/solubility_pipeline.ipynb` top to bottom. It will:
    - Clean/canonicalize AqSolDB and create train/val/test splits.
    - Train CNN, QNN, and Hybrid; save weights to `solubility/artifacts/` and metrics/predictions to `solubility/results/`.
