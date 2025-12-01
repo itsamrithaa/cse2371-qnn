@@ -8,3 +8,4 @@ pennylane
 tqdm
 jupyter
 ipykernel
+researchpy
